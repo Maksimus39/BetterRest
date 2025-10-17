@@ -10,6 +10,8 @@ struct ContentView: View {
     @State private var alertMessage = ""
     @State private var showingAlert = false
     
+    let coffeeAmounts = Array(1...20)
+    
     static var defaultWakeTime: Date {
         var components = DateComponents()
         components.hour = 7
@@ -29,24 +31,27 @@ struct ContentView: View {
                                displayedComponents: .hourAndMinute)
                     .labelsHidden()
                 }
-               
-                VStack(alignment: .leading, spacing: 0){
+                
+                Section("Sleep Hours Section"){
                     Text("Desired amount of sleep")
                         .font(.headline)
                     
                     Stepper("\(sleepAmount.formatted()) hours",
                             value: $sleepAmount, in: 4...12, step: 0.25)
                 }
-               
-                VStack(alignment: .leading, spacing: 0){
+                
+                Section("Sektion coffe cups"){
                     Text("Daily coffe intake")
                         .font(.headline)
                     
-                    Stepper("^[\(coffeAmount) cup](inflect: true)",
-                            value: $coffeAmount,
-                            in: 1...20)
+                    Picker("Number of cups", selection: $coffeAmount) {
+                        ForEach(coffeeAmounts, id: \.self) { cups in
+                            Text("^[\(cups) cup](inflect: true)")
+                        }
+                    }
+                    .pickerStyle(WheelPickerStyle())
                 }
-               
+                
             }
             .navigationTitle("BetterRest")
             .toolbar {
